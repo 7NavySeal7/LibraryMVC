@@ -1,6 +1,10 @@
-﻿
+﻿@using Common.Utils.Enums
+@using static Common.Utils.Constant.Const
 @{
     ViewData["Title"] = "Editoriales";
+    var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
+    bool isAdmin = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Administrador).ToString());
+    bool isEstand = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Estandar).ToString());
 }
 
 
@@ -9,9 +13,13 @@
         <h1>Listado de Editoriales</h1>
     </div>
 </div>
-<div class="row mb-2">
-    <button title="Nueva Editorial" class="btn btn-primary" onclick="nuevaEditorial()"><i class="fas fa-book"></i> Nueva Editorial</button>
-</div>
+@if (isAdmin || isEstand)
+{
+    <div class="row mb-2">
+        <button title="Nueva Editorial" class="btn btn-primary" onclick="nuevaEditorial()"><i class="fas fa-book"></i> Nueva Editorial</button>
+    </div>
+}
+
 <div class="row">
     <table class="table">
         <thead class="thead-dark">
@@ -64,7 +72,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-<script type="text/javascript" charset="utf-8">
+    <script type="text/javascript" charset="utf-8">
 
     var listEditorial = [];
 
@@ -264,6 +272,6 @@
             });
     }
 
-</script>
+    </script>
 }
 

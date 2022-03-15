@@ -1,5 +1,11 @@
-﻿@{
+﻿@using Common.Utils.Enums
+@using static Common.Utils.Constant.Const
+
+@{
     ViewData["Title"] = "Autores";
+    var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
+    bool isAdmin = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Administrador).ToString());
+    bool isEstand = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Estandar).ToString());
 }
 
 
@@ -8,9 +14,13 @@
         <h1>Listado de Autores</h1>
     </div>
 </div>
-<div class="row mb-2">
-    <button title="Nuevo Autor" class="btn btn-primary" onclick="nuevoAutor()"><i class="fas fa-user-alt"></i> Nuevo Autor</button>
-</div>
+@if (isAdmin || isEstand)
+{
+    <div class="row mb-2">
+        <button title="Nuevo Autor" class="btn btn-primary" onclick="nuevoAutor()"><i class="fas fa-user-alt"></i> Nuevo Autor</button>
+    </div>
+}
+
 <div class="row">
     <table class="table">
         <thead class="thead-dark">

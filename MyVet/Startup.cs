@@ -48,7 +48,7 @@ namespace MyVet
                 {
                     //Tiempo que dura la autenticación
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-                    options.SlidingExpiration = true;
+                    options.SlidingExpiration = false;
                     options.AccessDeniedPath = "/Forbidden/";
                     //El login path me sirve para que automaticamente me dirija a la página de autenticación
                     options.LoginPath = "/Auth/Login";

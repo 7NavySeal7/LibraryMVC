@@ -1,6 +1,11 @@
-﻿
+﻿@using Common.Utils.Enums
+@using static Common.Utils.Constant.Const
 @{
     ViewData["Title"] = "Libros";
+
+    var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
+    bool isAdmin = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Administrador).ToString());
+    bool isEstand = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Estandar).ToString());
 }
 
 
@@ -9,9 +14,15 @@
         <h1>Listado de Libros</h1>
     </div>
 </div>
-<div class="row mb-2">
-    <button title="Nuevo Libro" class="btn btn-primary" onclick="nuevaLibro()"><i class="fas fa-book"></i> Nuevo Libro</button>
-</div>
+
+
+@if (isAdmin || isEstand)
+{
+    <div class="row mb-2">
+        <button id="nuevoLibro" title="Nuevo Libro" class="btn btn-primary" onclick="nuevaLibro()"><i class="fas fa-book"></i> Nuevo Libro</button>
+    </div>
+}
+
 <div class="row">
     <table class="table">
         <thead class="thead-dark">
@@ -44,7 +55,7 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="txtDates" class="col-form-label">Fecha</label>
-                                <input placeholder="Ingrese un fecha" type="date" class="form-control" id="txtDates" required>
+                                <input placeholder="Ingrese una fecha" type="date" class="form-control" id="txtDates" required>
                             </div>
 
                             <div class="col-md-6 form-group">
@@ -69,8 +80,8 @@
                                 </select>
                             </div>
 
-                        </div>                        
-                        
+                        </div>
+
                         <div class="row">
 
                             <div class="col-md-6 form-group">
@@ -93,10 +104,10 @@
                             <div class="col-md-12 form-group">
                                 <label for="txtDescripcion" class="col-form-label">Descripcion</label>
                                 <textarea class="form-control"
-                                        id="txtDescripcion"
-                                        required
-                                        placeholder="Descripción del Libro"
-                                        maxlength="300">
+                                          id="txtDescripcion"
+                                          required
+                                          placeholder="Descripción del Libro"
+                                          maxlength="300">
 
                                 </textarea>
                             </div>
@@ -119,7 +130,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-<script type="text/javascript" charset="utf-8">
+    <script type="text/javascript" charset="utf-8">
 
         var listBooks = [];
         var listEditorial = [];
@@ -133,7 +144,6 @@
         let idTypeBook = '';
         let idState = '';
         let idAuthorBook = '';
-
 
         //El documents ready funcion es donde ponemos todas nuestras funciones para que se ejecuten.
         $(document).ready(function () {
@@ -237,6 +247,7 @@
 
         function cargarGridBooks(data) {
             $("#cuerpoBooks").html("");
+            console.log(data);
             for (i = 0; i < data.result.length; i++) {
                 var tr = `
                 <tr>
@@ -377,7 +388,7 @@
                     });
                 }
             }
-        } 
+        }
 
         function validarForm() {
 
@@ -486,6 +497,8 @@
         //Boton Nuevo Libro
         function nuevaLibro() {
 
+            document.getElementById('txtDates').disabled = false;
+
             if (listEditorial.length == 0) {
                 getAllEditorial();
             }
@@ -519,10 +532,12 @@
 
             //setear fechas
             var now = new Date(books.dateRelease);
+            console.log(books.dateRelease);
             var day = ("0" + now.getDate()).slice(-2);
             var month = ("0" + (now.getMonth() + 1)).slice(-2);
             var today = now.getFullYear() + "-" + (month) + "-" + (day);
             $('#txtDates').val(today);
+            document.getElementById('txtDates').disabled = true;
 
             $('#txtDescripcion').val(books.description);
 
@@ -535,7 +550,6 @@
             $('#modalBooks').modal({ keyboard: true });
     }
 
-        //Revision
         function eliminarBook(idBook) {
             console.log("mándo a eliminar", idBook);
 
@@ -586,5 +600,5 @@
                 });
         }
 
-</script>
+    </script>
 }
