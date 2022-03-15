@@ -30,7 +30,7 @@ namespace MyVet.Domain.Services
         public async Task<ResponseDto> GetAllBooks(string token)
         {
             string urlBase = _config.GetSection("ApiMyLibrary").GetSection("UrlBase").Value;
-            string controller = _config.GetSection("ApiMyLibrary").GetSection("ControllerAuthentication").Value;
+            string controller = _config.GetSection("ApiMyLibrary").GetSection("ControllerBook").Value;
             string method = _config.GetSection("ApiMyLibrary").GetSection("MethodGetAllBooks").Value;
 
             Dictionary<string, string> parameters = new Dictionary<string, string>();
