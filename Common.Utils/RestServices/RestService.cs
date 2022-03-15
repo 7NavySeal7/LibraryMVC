@@ -9,8 +9,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-
 
 namespace Common.Utils.RestServices
 {
@@ -117,7 +115,7 @@ namespace Common.Utils.RestServices
         }
 
         public async Task<T> DeleteRestServiceAsync<T>(string url, string controller, string method,
-            IDictionary<string, int> parameters, IDictionary<string, string> headers)
+            IDictionary<string, string> parameters, IDictionary<string, string> headers)
         {
             string baseUrl = string.Format("{0}/{1}/{2}", url, controller, method);
 
@@ -149,8 +147,7 @@ namespace Common.Utils.RestServices
                 else
                 {
                     var data = await res.Content.ReadAsStringAsync();
-                    var message = System.Text.Json.JsonSerializer.Deserialize<T>(data);
-                    return message;
+                    return JsonConvert.DeserializeObject<T>(data);
                 }
             }
         }

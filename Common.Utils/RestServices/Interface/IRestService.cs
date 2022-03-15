@@ -18,6 +18,6 @@ namespace Common.Utils.RestServices.Interface
             IDictionary<string, string> parameters, IDictionary<string, string> headers);
 
         Task<T> DeleteRestServiceAsync<T>(string url, string controller, string method,
-            IDictionary<string, int> parameters, IDictionary<string, string> headers);
+            IDictionary<string, string> parameters, IDictionary<string, string> headers);
     }
 }

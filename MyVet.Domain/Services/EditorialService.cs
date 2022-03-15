@@ -87,16 +87,16 @@ namespace MyVet.Domain.Services
             string urlBase = _config.GetSection("ApiMyLibrary").GetSection("UrlBase").Value;
             string controller = _config.GetSection("ApiMyLibrary").GetSection("ControllerEditorial").Value;
             string method = _config.GetSection("ApiMyLibrary").GetSection("MethodDeleteEditorial").Value;
-            Dictionary<string, int> parameters = new Dictionary<string, int>();
-            parameters.Add("idEdit", idEdit);
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("idEdit", idEdit.ToString());
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Token", token);
             ResponseDto resultToken = await _restService.DeleteRestServiceAsync<ResponseDto>(urlBase, controller, method, parameters, headers);
-            resultToken.IsSuccess = true;
-            if (resultToken.IsSuccess)
-                resultToken.Message = "Se eliminó correctamente la editorial";
-            else
-                resultToken.Message = "Hubo un error al eliminar el autor, por favor vuelva a intentalo";
+            //resultToken.IsSuccess = true;
+            //if (resultToken.IsSuccess)
+            //    resultToken.Message = "Se eliminó correctamente la editorial";
+            //else
+            //    resultToken.Message = "Hubo un error al eliminar el autor, por favor vuelva a intentalo";
             return resultToken;
         }
         #endregion
