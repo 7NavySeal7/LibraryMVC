@@ -162,7 +162,7 @@
                     dataType: "json",
                     success: function (data) {
                         modalProcesando(false);
-                        listBooks = data;
+                        listBooks = data.result;
                         console.log(listBooks);
                         cargarGridBooks(listBooks);
                     },
@@ -181,7 +181,7 @@
                     dataType: "json",
                     success: function (data) {
                         modalProcesando(false);
-                        listEditorial = data;
+                        listEditorial = data.result;
                         cargarEditorial(listEditorial);
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -199,7 +199,7 @@
                     dataType: "json",
                     success: function (data) {
                         modalProcesando(false);
-                        listAuthor = data;
+                        listAuthor = data.result;
                         cargarAutores(listAuthor);
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -217,7 +217,7 @@
                     dataType: "json",
                     success: function (data) {
                         modalProcesando(false);
-                        listTypeBook = data;
+                        listTypeBook = data.result;
                         cargarTiposLibros(listTypeBook);
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -235,7 +235,7 @@
                     dataType: "json",
                     success: function (data) {
                         modalProcesando(false);
-                        listState = data;
+                        listState = data.result;
                         cargarEstados(listState);
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -248,20 +248,20 @@
         function cargarGridBooks(data) {
             $("#cuerpoBooks").html("");
             console.log(data);
-            for (i = 0; i < data.result.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 var tr = `
                 <tr>
-                    <td>`+ data.result[i].strDateRelease + `</td>
-                    <td>`+ data.result[i].name + `</td>
-                    <td>`+ data.result[i].nameEditorial + `</td>
-                    <td>`+ data.result[i].nameAuthor +' '+data.result[i].lastNameAuthor + `</td>
-                    <td>`+ data.result[i].nameTypeBook + `</td>
-                    <td>`+ data.result[i].nameState + `</td>
-                    <td>`+ data.result[i].description + `</td>
+                    <td>`+ data[i].strDateRelease + `</td>
+                    <td>`+ data[i].name + `</td>
+                    <td>`+ data[i].nameEditorial + `</td>
+                    <td>`+ data[i].nameAuthor +' '+data[i].lastNameAuthor + `</td>
+                    <td>`+ data[i].nameTypeBook + `</td>
+                    <td>`+ data[i].nameState + `</td>
+                    <td>`+ data[i].description + `</td>
 
                     <td>
-                        <button title="Editar" class="btn btn-warning" onclick="editarBook(`+ data.result[i].idBook + `)"><i class="fas fa-edit"></i><em> Editar</em></button>
-                        <button title="Eliminar" class="btn btn-danger" onclick="eliminarBook(`+ data.result[i].idBook + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>
+                        <button title="Editar" class="btn btn-warning" onclick="editarBook(`+ data[i].idBook + `)"><i class="fas fa-edit"></i><em> Editar</em></button>
+                        <button title="Eliminar" class="btn btn-danger" onclick="eliminarBook(`+ data[i].idBook + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>
                     </td>
                 </tr>
             `;
@@ -272,12 +272,12 @@
         function cargarEditorial(data, selected) {
             $("#cmbEditorial").empty();
             $("#cmbEditorial").append('<option value="" disabled selected>Seleccione la editorial</option>');
-            $.each(data.result, function (i, lista) {
-                if (data.result[i].idEditorial == selected) {
-                    $("#cmbEditorial").append('<option value="' + data.result[i].idEditorial + '"selected>' + data.result[i].editorial + '</option>');
+            $.each(data, function (i, lista) {
+                if (data[i].idEditorial == selected) {
+                    $("#cmbEditorial").append('<option value="' + data[i].idEditorial + '"selected>' + data[i].editorial + '</option>');
                 }
                 else {
-                    $("#cmbEditorial").append('<option value="' + data.result[i].idEditorial + '">' + data.result[i].editorial + '</option>');
+                    $("#cmbEditorial").append('<option value="' + data[i].idEditorial + '">' + data[i].editorial + '</option>');
                 }
             });
         }
@@ -285,12 +285,12 @@
         function cargarAutores(data, selected) {
             $("#cmbAutor").empty();
             $("#cmbAutor").append('<option value="" disabled selected>Seleccione la editorial</option>');
-                $.each(data.result, function (i, lista) {
-                    if (data.result[i].idAuthor == selected) {
-                        $("#cmbAutor").append('<option value="' + data.result[i].idAuthor + '"selected>' + data.result[i].nameAuthor + ' ' + data.result[i].lastNameAuthor +'</option>');
+                $.each(data, function (i, lista) {
+                    if (data[i].idAuthor == selected) {
+                        $("#cmbAutor").append('<option value="' + data[i].idAuthor + '"selected>' + data[i].nameAuthor + ' ' + data[i].lastNameAuthor +'</option>');
                     }
                     else {
-                        $("#cmbAutor").append('<option value="' + data.result[i].idAuthor + '">' + data.result[i].nameAuthor + ' ' + data.result[i].lastNameAuthor + '</option>');
+                        $("#cmbAutor").append('<option value="' + data[i].idAuthor + '">' + data[i].nameAuthor + ' ' + data[i].lastNameAuthor + '</option>');
                     }
                 });
         }
@@ -298,12 +298,12 @@
         function cargarTiposLibros(data, selected) {
             $("#cmbTypeBook").empty();
             $("#cmbTypeBook").append('<option value="" disabled selected>Seleccione el tipo de libro</option>');
-            $.each(data.result, function (i, lista) {
-                if (data.result[i].idTypeBook == selected) {
-                    $("#cmbTypeBook").append('<option value="' + data.result[i].idTypeBook + '"selected>' + data.result[i].typeBook + '</option>');
+            $.each(data, function (i, lista) {
+                if (data[i].idTypeBook == selected) {
+                    $("#cmbTypeBook").append('<option value="' + data[i].idTypeBook + '"selected>' + data[i].typeBook + '</option>');
                 }
                 else {
-                    $("#cmbTypeBook").append('<option value="' + data.result[i].idTypeBook + '">' + data.result[i].typeBook +'</option>');
+                    $("#cmbTypeBook").append('<option value="' + data[i].idTypeBook + '">' + data[i].typeBook +'</option>');
                 }
             });
     }
@@ -311,12 +311,12 @@
         function cargarEstados(data, selected) {
             $("#cmbEstado").empty();
             $("#cmbEstado").append('<option value="" disabled selected>Seleccione el estado</option>');
-            $.each(data.result, function (i, lista) {
-                if (data.result[i].idState == selected) {
-                    $("#cmbEstado").append('<option value="' + data.result[i].idState + '"selected>' + data.result[i].state + '</option>');
+            $.each(data, function (i, lista) {
+                if (data[i].idState == selected) {
+                    $("#cmbEstado").append('<option value="' + data[i].idState + '"selected>' + data[i].state + '</option>');
                 }
                 else {
-                    $("#cmbEstado").append('<option value="' + data.result[i].idState + '">' + data.result[i].state + '</option>');
+                    $("#cmbEstado").append('<option value="' + data[i].idState + '">' + data[i].state + '</option>');
                 }
             });
     }
@@ -522,7 +522,7 @@
 
         function editarBook(id) {
             idBook = id;
-            let books = listBooks.result.find(x => x.idBook == idBook);
+            let books = listBooks.find(x => x.idBook == idBook);
             idEditorial = books.idEditorial;
             idAuthor = books.idAuthor;
             idTypeBook = books.idTypeBook;
@@ -575,9 +575,8 @@
                             success: function (data) {
                                 modalProcesando(false);
                                 if (data.isSuccess) {
-                                    //listBooks = listBooks.result.filter(x => x.idBook != idBook);
-                                    //cargarGridBooks(listBooks);
-                                    getAllBooks();
+                                    listBooks = listBooks.filter(x => x.idBook != idBook);
+                                    cargarGridBooks(listBooks);
                                     Swal.fire(
                                         'Eliminado!',
                                         data.message,
