@@ -131,7 +131,7 @@ namespace MyVet.Domain.Services
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Token", token);
             ResponseDto resultToken = await _restService.DeleteRestServiceAsync<ResponseDto>(urlBase, controller, method, parameters, headers);
-            resultToken.IsSuccess = true;
+            //resultToken.IsSuccess = true;
             //if (resultToken.IsSuccess)
             //    resultToken.Message = "Se eliminó correctamente la editorial";
             //else
