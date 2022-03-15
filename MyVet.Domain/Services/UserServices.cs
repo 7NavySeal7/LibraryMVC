@@ -10,6 +10,7 @@ using static Common.Utils.Enums.Enums;
 using Common.Utils.RestServices.Interface;
 using Microsoft.Extensions.Configuration;
 using MyVet.Domain.Dto.RestServices;
+using Newtonsoft.Json;
 
 namespace MyVet.Domain.Services
 {
@@ -51,10 +52,22 @@ namespace MyVet.Domain.Services
         #endregion
 
         #region Methods Crud
-        //public List<UserEntity> GetAll()
-        //{
-        //    return _unitOfWork.UserRepository.GetAll().ToList();
-        //}
+        public async Task<ResponseDto> GetAllUsers(string token)
+        {
+            string urlBase = _config.GetSection("ApiMyLibrary").GetSection("UrlBase").Value;
+            string controller = _config.GetSection("ApiMyLibrary").GetSection("ControllerUser").Value;
+            string method = _config.GetSection("ApiMyLibrary").GetSection("MethodGetAllUser").Value;
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("Token", token);
+
+            ResponseDto response = await _restService.GetRestServiceAsync<ResponseDto>(urlBase, controller, method, parameters, headers);
+            if (response.IsSuccess)
+                response.Result = JsonConvert.DeserializeObject<List<UserDto>>(response.Result.ToString());
+
+            return response;
+        }
 
         ////Esta función sirve para traerme un usuario especifico
         //public UserEntity GetUser(int idUser)

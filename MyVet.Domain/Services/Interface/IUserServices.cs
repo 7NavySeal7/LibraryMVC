@@ -7,7 +7,7 @@ namespace MyVet.Domain.Services.Interface
     public interface IUserServices
     {
         #region Methods Crud
-        //List<UserEntity> GetAll();
+        Task<ResponseDto> GetAllUsers(string token);
 
         //UserEntity GetUser(int idUser);
 

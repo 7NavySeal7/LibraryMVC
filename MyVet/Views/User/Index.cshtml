@@ -1,0 +1,102 @@
+﻿@using Common.Utils.Enums
+@using static Common.Utils.Constant.Const
+@{
+    ViewData["Title"] = "Editoriales";
+    var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
+    bool isAdmin = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Administrador).ToString());
+    bool isEstand = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Estandar).ToString());
+}
+
+@if (isAdmin || isEstand)
+{
+    <div class="row justify-content-center">
+        <div class="text-center">
+            <h1>Listado de Usuarios</h1>
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Constraseña</th>
+                </tr>
+            </thead>
+            @* Cuerpo de la tabla *@
+            <tbody id="cuerpoUsuarios"></tbody>
+        </table>
+    </div>
+
+    @section Scripts{
+
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+        <script type="text/javascript" charset="utf-8">
+
+    var listUsers = [];
+
+    let idUser = '';
+
+    $(document).ready(function () {
+        getAllUsers();
+    });
+
+    function getAllUsers() {
+        modalProcesando(true);
+            $.ajax({
+                url: '@Url.Action("GetAllUsers", "User")',
+                method: 'GET',
+                dataType: "json",
+                success: function (data) {
+                    modalProcesando(false);
+                    listUsers = data.result;
+                    console.log(listUsers);
+                    cargarGridUsers(listUsers);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                        modalProcesando(false);
+                        console.error(xhr, textStatus, errorThrown);
+                    }
+            });
+    }
+
+    function cargarGridUsers(data) {
+        $("#cuerpoUsuarios").html("");
+        for (i = 0; i < data.length; i++) {
+            var tr = `
+                <tr>
+                    <td>`+ data[i].name + `</td>
+                    <td>`+ data[i].lastName + `</td>
+                    <td>`+ data[i].userName + `</td>
+                    <td>`+ data[i].password + `</td>
+                    <td>
+                        <!--<button title="Editar" class="btn btn-warning" onclick="editarEditorial(`+ data[i].idUser + `)"><i class="fas fa-edit"></i><em> Editar</em></button>
+                        <button title="Eliminar" class="btn btn-danger" onclick="eliminarEditorial(`+ data[i].idUser + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>-->
+                    </td>
+                </tr>
+            `;
+            $("#cuerpoUsuarios").append(tr);
+        }
+    }
+
+        </script>
+    }
+}
+else
+{
+    @section Scripts{
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                Swal.fire(
+                    '¡Usuario no Autorizado!',
+                    'No tiene suficientes privilegios para ver esta sección.',
+                    'error');
+            });
+        </script>
+    }
+}

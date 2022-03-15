@@ -104,10 +104,10 @@
                             <div class="col-md-12 form-group">
                                 <label for="txtDescripcion" class="col-form-label">Descripcion</label>
                                 <textarea class="form-control"
-                                          id="txtDescripcion"
-                                          required
-                                          placeholder="Descripción del Libro"
-                                          maxlength="300">
+                                        id="txtDescripcion"
+                                        required
+                                        placeholder="Descripción del Libro"
+                                        maxlength="300">
 
                                 </textarea>
                             </div>
@@ -361,7 +361,7 @@
                     });
                 } else {
                     parametro.idAuthorBook = idAuthorBook;
-                    parametro.idBook = idBook;
+                    //parametro.idBook = idBook;
                     modalProcesando(true);
                     $.ajax({
                         url: '@Url.Action("UpdateBooks", "Book")',

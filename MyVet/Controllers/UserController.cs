@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MyVet.Domain.Dto;
 using MyVet.Domain.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Common.Utils.Constant.Const;
 
 namespace MyVet.Controllers
 {
@@ -13,24 +15,34 @@ namespace MyVet.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        //Atributo creado a partir de la interfaz
+        #region Attributes
         private readonly IUserServices _userServices;
-        private readonly IRolServices _rolServices;
+        #endregion
 
-        //Se le inyecta el servicio por medio de la instancia de la interfaz
-        public UserController(IUserServices userServices, IRolServices rolServices)
+        #region Builder
+        public UserController(IUserServices userServices)
         {
-            _userServices = userServices; //Le pasamos el valor de esa instancia al atributo global
-            _rolServices = rolServices;
+            _userServices = userServices;
         }
-        
-        //[HttpGet]
-        //public IActionResult Index()
-        //{
-        //    //Listado de usuarios
-        //    List<UserEntity> users = _userServices.GetAll();
-        //    return View(users);
-        //}
+        #endregion
+
+        #region Controllers
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var user = HttpContext.User;
+            string token = user.Claims.FirstOrDefault(x => x.Type == TypeClaims.Token).Value;
+
+            ResponseDto response = await _userServices.GetAllUsers(token);
+            return Ok(response);
+        } 
+        #endregion
 
         //[HttpGet]
         //public IActionResult Edit(int? id)
@@ -45,17 +57,26 @@ namespace MyVet.Controllers
         //        response = NotFound();
         //    else
         //        response = View(user);
-            
+
         //    return response;
-        //}        
-        
+        //}
+        //
+
+        //[HttpGet]
+        //public IActionResult Index()
+        //{
+        //    //Listado de usuarios
+        //    List<UserEntity> users = _userServices.GetAll();
+        //    return View(users);
+        //}
+
         //[HttpPost]
         //public async Task<IActionResult> Edit(UserEntity user)
         //{
         //    IActionResult response;
 
         //    bool result = await _userServices.UpdateUser(user);
-            
+
         //    if (result)
         //    {
         //        response = RedirectToAction(nameof(Index));
