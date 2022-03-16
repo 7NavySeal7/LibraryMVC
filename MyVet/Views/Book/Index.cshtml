@@ -247,8 +247,8 @@
 
         function cargarGridBooks(data) {
             $("#cuerpoBooks").html("");
-            console.log(data);
             for (i = 0; i < data.length; i++) {
+                var editar = '';
                 var tr = `
                 <tr>
                     <td>`+ data[i].strDateRelease + `</td>
@@ -260,7 +260,7 @@
                     <td>`+ data[i].description + `</td>
 
                     <td>
-                        <button title="Editar" class="btn btn-warning" onclick="editarBook(`+ data[i].idBook + `)"><i class="fas fa-edit"></i><em> Editar</em></button>
+                        <button title = "Editar" class="btn btn-warning" onclick = "editarBook(` + data[i].idBook + `)" ><i class="fas fa-edit"></i><em> Editar</em></button>
                         <button title="Eliminar" class="btn btn-danger" onclick="eliminarBook(`+ data[i].idBook + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>
                     </td>
                 </tr>

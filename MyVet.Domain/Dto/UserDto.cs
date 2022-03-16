@@ -8,6 +8,7 @@ namespace MyVet.Domain.Dto
     public class UserDto
     {
         public int IdUser { get; set; }
+        public string NameRol { get; set; }
 
         [Required(ErrorMessage = "El email es requerido")]
         [MaxLength(200)]

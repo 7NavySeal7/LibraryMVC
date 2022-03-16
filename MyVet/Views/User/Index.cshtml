@@ -23,6 +23,7 @@
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
                     <th scope="col">Correo</th>
+                    <th scope="col">Rol</th>
                     <th scope="col">Constraseña</th>
                 </tr>
             </thead>
@@ -31,38 +32,35 @@
         </table>
     </div>
 
-    @section Scripts{
+@section Scripts{
 
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
-        <script type="text/javascript" charset="utf-8">
-
-    var listUsers = [];
-
-    let idUser = '';
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+<script type="text/javascript" charset="utf-8">
 
     $(document).ready(function () {
         getAllUsers();
     });
 
+    var listUsers = [];
+
     function getAllUsers() {
-        modalProcesando(true);
-            $.ajax({
-                url: '@Url.Action("GetAllUsers", "User")',
-                method: 'GET',
-                dataType: "json",
-                success: function (data) {
+    modalProcesando(true);
+        $.ajax({
+            url: '@Url.Action("GetAllUsers", "User")',
+            method: 'GET',
+            dataType: "json",
+            success: function (data) {
+                modalProcesando(false);
+                listUsers = data.result;
+                cargarGridUsers(listUsers);
+            },
+            error: function (xhr, textStatus, errorThrown) {
                     modalProcesando(false);
-                    listUsers = data.result;
-                    console.log(listUsers);
-                    cargarGridUsers(listUsers);
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                        modalProcesando(false);
-                        console.error(xhr, textStatus, errorThrown);
-                    }
-            });
+                    console.error(xhr, textStatus, errorThrown);
+                }
+        });
     }
 
     function cargarGridUsers(data) {
@@ -73,19 +71,19 @@
                     <td>`+ data[i].name + `</td>
                     <td>`+ data[i].lastName + `</td>
                     <td>`+ data[i].userName + `</td>
+                    <td>`+ data[i].nameRol + `</td>
                     <td>`+ data[i].password + `</td>
-                    <td>
+                    <!--<td>
                         <!--<button title="Editar" class="btn btn-warning" onclick="editarEditorial(`+ data[i].idUser + `)"><i class="fas fa-edit"></i><em> Editar</em></button>
                         <button title="Eliminar" class="btn btn-danger" onclick="eliminarEditorial(`+ data[i].idUser + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>-->
-                    </td>
+                    </td>-->
                 </tr>
             `;
             $("#cuerpoUsuarios").append(tr);
         }
     }
-
-        </script>
-    }
+</script>
+}
 }
 else
 {
