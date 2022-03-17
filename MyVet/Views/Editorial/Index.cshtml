@@ -26,7 +26,10 @@
             <tr>
                 <th scope="col">Editorial</th>
                 <th scope="col">Sede</th>
-                <th scope="col">Opciones</th>
+                @if(isAdmin || isEstand) 
+                {
+                    <th scope="col">Opciones</th>
+                }
             </tr>
         </thead>
         @* Cuerpo de la tabla *@
@@ -107,10 +110,13 @@
                 <tr>
                     <td>`+ data[i].editorial + `</td>
                     <td>`+ data[i].sede + `</td>
+
+                @if (isAdmin || isEstand) {
                     <td>
                         <button title="Editar" class="btn btn-warning" onclick="editarEditorial(`+ data[i].idEditorial + `)"><i class="fas fa-edit"></i><em> Editar</em></button>
                         <button title="Eliminar" class="btn btn-danger" onclick="eliminarEditorial(`+ data[i].idEditorial + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>
                     </td>
+                }
                 </tr>
             `;
             $("#cuerpoEditorial").append(tr);

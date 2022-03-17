@@ -34,7 +34,9 @@
                 <th scope="col">Tipo Libro</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Descripcion</th>
-                <th scope="col">Opciones</th>
+                @if (isAdmin || isEstand) { 
+                    <th scope="col">Opciones</th>
+                }
             </tr>
         </thead>
         @* Cuerpo de la tabla *@
@@ -130,7 +132,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8">
 
         var listBooks = [];
         var listEditorial = [];
@@ -259,10 +261,15 @@
                     <td>`+ data[i].nameState + `</td>
                     <td>`+ data[i].description + `</td>
 
-                    <td>
-                        <button title = "Editar" class="btn btn-warning" onclick = "editarBook(` + data[i].idBook + `)" ><i class="fas fa-edit"></i><em> Editar</em></button>
-                        <button title="Eliminar" class="btn btn-danger" onclick="eliminarBook(`+ data[i].idBook + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>
-                    </td>
+
+                    @if (isAdmin || isEstand)
+                    {
+                        <td>
+                            <button title = "Editar" class="btn btn-warning" onclick = "editarBook(` + data[i].idBook + `)" ><i class="fas fa-edit"></i><em> Editar</em></button>
+                            <button title="Eliminar" class="btn btn-danger" onclick="eliminarBook(`+ data[i].idBook + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>
+                        </td>           
+                    }
+
                 </tr>
             `;
                 $("#cuerpoBooks").append(tr);
@@ -599,5 +606,5 @@
                 });
         }
 
-    </script>
+</script>
 }

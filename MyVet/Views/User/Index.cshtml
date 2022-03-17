@@ -1,7 +1,7 @@
 ﻿@using Common.Utils.Enums
 @using static Common.Utils.Constant.Const
 @{
-    ViewData["Title"] = "Editoriales";
+    ViewData["Title"] = "Usuarios";
     var idRols = User.Claims.FirstOrDefault(x => x.Type == TypeClaims.IdRol).Value;
     bool isAdmin = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Administrador).ToString());
     bool isEstand = idRols.Any(x => x.ToString() == Convert.ToInt32(Enums.Rol.Estandar).ToString());

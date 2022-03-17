@@ -27,7 +27,9 @@
             <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellido</th>
-                <th scope="col">Opciones</th>
+                @if(isAdmin || isEstand){
+                    <th scope="col">Opciones</th>
+                } 
             </tr>
         </thead>
         @* Cuerpo de la tabla *@
@@ -72,7 +74,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8">
 
     var listAuthors = [];
 
@@ -107,10 +109,13 @@
                 <tr>
                     <td>`+ data[i].nameAuthor + `</td>
                     <td>`+ data[i].lastNameAuthor + `</td>
-                    <td>
-                        <button title="Editar" class="btn btn-warning" onclick="editarAutor(`+ data[i].idAuthor + `)"><i class="fas fa-edit"></i><em> Editar</em></button>
-                        <button title="Eliminar" class="btn btn-danger" onclick="eliminarAutor(`+ data[i].idAuthor + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>
-                    </td>
+                    @if(isAdmin || isEstand)
+                    {
+                        <td>
+                            <button title="Editar" class="btn btn-warning" onclick="editarAutor(`+ data[i].idAuthor + `)"><i class="fas fa-edit"></i><em> Editar</em></button>
+                            <button title="Eliminar" class="btn btn-danger" onclick="eliminarAutor(`+ data[i].idAuthor + `)"><i class="far fa-trash-alt"></i><em> Eliminar</em></button>
+                        </td>
+                    }
                 </tr>
             `;
             $("#cuerpoAutores").append(tr);
@@ -268,5 +273,5 @@
             });
     }
 
-    </script>
+</script>
 }
